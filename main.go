@@ -43,6 +43,7 @@ func main() {
 
 		if strings.HasSuffix(info.Name(), ".go") {
 
+			fmt.Printf("\n-------------------\n")
 			fileContents, err := ioutil.ReadFile(path)
 			if err != nil {
 				log.Fatalf("Failed to read file: %s", path)
@@ -54,9 +55,9 @@ func main() {
 			// extract package functions
 			packageFunctions := functionRegex.FindStringSubmatch(string(fileContents))[1:]
 
-			fmt.Printf("Package Name: %s\n", packageName)
+			fmt.Printf("%s\n", packageName)
 			for _, functionName := range packageFunctions {
-				fmt.Printf("func: %s\n", functionName)
+				fmt.Printf("--> %s\n", functionName)
 			}
 
 		}
