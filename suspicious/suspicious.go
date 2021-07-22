@@ -5,7 +5,11 @@ import (
 )
 
 type TimeStore struct {
-	name     string
-	begining time.Time
-	ending   time.Time
+	name      string
+	beginning time.Time
+	ending    time.Time
+}
+
+func (t TimeStore) ExtendLife(ext time.Duration) {
+	t.ending.Add(ext)
 }
