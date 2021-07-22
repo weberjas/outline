@@ -14,7 +14,8 @@ var projectContents = make(map[string]outlinePackage)
 
 // define regular expressions for elements of interest
 var packageRegex = regexp.MustCompile(`^package (\S+)`)
-var functionRegex = regexp.MustCompile(`\nfunc (\S+)[(]`)
+var functionRegex = regexp.MustCompile(`func (\S+)[(]`)
+var structRegex = regexp.MustCompile(`type (\S+) struct`)
 
 type outlinePackage struct {
 	name      string
@@ -53,11 +54,23 @@ func main() {
 			packageName := packageRegex.FindStringSubmatch(string(fileContents))[1]
 
 			// extract package functions
-			packageFunctions := functionRegex.FindStringSubmatch(string(fileContents))[1:]
+			packageFunctions := functionRegex.FindAllStringSubmatch(string(fileContents), -1)
+
+			// extract package structs
+			packageStructs := structRegex.FindAllStringSubmatch(string(fileContents), -1)
 
 			fmt.Printf("%s\n", packageName)
-			for _, functionName := range packageFunctions {
-				fmt.Printf("--> %s\n", functionName)
+			// print functions
+			if len(packageFunctions) > 0 {
+				for _, functionName := range packageFunctions {
+					fmt.Printf("F --> %s\n", string(functionName[1]))
+				}
+			}
+			// print structs
+			if len(packageStructs) > 0 {
+				for _, structName := range packageStructs[1:] {
+					fmt.Printf("S --> %s\n", string(structName[1]))
+				}
 			}
 
 		}
