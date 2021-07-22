@@ -14,13 +14,8 @@ var projectContents = make(map[string]outlinePackage)
 
 // define regular expressions for elements of interest
 var packageRegex = regexp.MustCompile(`^package (\S+)`)
-<<<<<<< Updated upstream
 var functionRegex = regexp.MustCompile(`func (\S+)[(]`)
 var structRegex = regexp.MustCompile(`type (\S+) struct`)
-=======
-var functionRegex = regexp.MustCompile(`\nfunc (\S+)[(]`)
-var structRegex = regexp.MustCompile(`ntype `)
->>>>>>> Stashed changes
 
 type outlinePackage struct {
 	name      string
