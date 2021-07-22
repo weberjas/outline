@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/fs"
 	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -12,7 +13,10 @@ func main() {
 		if err != nil {
 			return err
 		}
-		fmt.Println(info.Name())
+
+		if strings.HasSuffix(info.Name(), ".go") {
+			fmt.Println(info.Name())
+		}
 		return nil
 	})
 
