@@ -19,6 +19,7 @@ var structRegex = regexp.MustCompile(`\ntype (\S+) struct`)
 
 type outlinePackage struct {
 	name      string
+	packages  map[string]outlinePackage
 	functions map[string]outlineFunc
 	structs   map[string]outlineStruct
 }
@@ -31,7 +32,7 @@ type outlineFunc struct {
 
 type outlineStruct struct {
 	name  string
-	funcs []outlineFunc
+	funcs map[string]outlineFunc
 }
 
 func main() {
@@ -52,6 +53,7 @@ func main() {
 
 			// extract the package name
 			packageName := packageRegex.FindStringSubmatch(string(fileContents))[1]
+			projectContents[packageName] = outlinePackage{name: packageName, functions: make(map[string]outlineFunc), structs: make(map[string]outlineStruct)}
 
 			// extract package functions
 			packageFunctions := functionRegex.FindAllStringSubmatch(string(fileContents), -1)
@@ -63,6 +65,7 @@ func main() {
 			// print functions
 			if len(packageFunctions) > 0 {
 				for _, functionName := range packageFunctions {
+					projectContents[packageName].functions[functionName[1]] = outlineFunc{name: functionName[1]}
 					fmt.Printf("F --> %s\n", string(functionName[1]))
 				}
 			}
@@ -70,6 +73,7 @@ func main() {
 			if len(packageStructs) > 0 {
 				for _, structName := range packageStructs {
 					fmt.Printf("S --> %s\n", string(structName[1]))
+					projectContents[packageName].structs[structName[1]] = outlineStruct{name: structName[1], funcs: make(map[string]outlineFunc)}
 
 					var methodRegex = regexp.MustCompile(fmt.Sprintf(`\nfunc \(\S+ %s\) (\S+)[(]`, string(structName[1])))
 					// extract struct methods
@@ -77,6 +81,7 @@ func main() {
 
 					for _, methodName := range packageMethods {
 						fmt.Printf("  M --> %s\n", string(methodName[1]))
+						projectContents[packageName].structs[structName[1]].funcs[methodName[1]] = outlineFunc{name: methodName[1]}
 
 					}
 				}
