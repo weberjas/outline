@@ -29,7 +29,12 @@ type OutlineStruct struct {
 }
 
 func (op OutlinePackage) Print(indentLevel int) {
-	fmt.Printf("Package: %s\n", op.Name)
+	// determine how far to indent
+	indent := ""
+	for i := 0; i < indentLevel; i++ {
+		indent = indent + "    "
+	}
+	fmt.Printf("%sPackage: %s\n", indent, op.Name)
 	if len(op.Packages) > 0 {
 		for _, internalPackages := range op.Packages {
 			internalPackages.Print(indentLevel + 1)
