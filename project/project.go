@@ -8,7 +8,7 @@ import (
 )
 
 // define regular expressions for elements of interest
-var packageRegex = regexp.MustCompile(`^package (\S+)`)
+var packageRegex = regexp.MustCompile(`(?m)^package (\S+)`)
 var functionRegex = regexp.MustCompile(`\nfunc (\S+)[(]`)
 var structRegex = regexp.MustCompile(`\ntype (\S+) struct`)
 
@@ -78,6 +78,7 @@ func ParseFile(fileContents []byte) (OutlinePackage, error) {
 
 	// extract the package name
 	packageName := packageRegex.FindStringSubmatch(string(fileContents))[1]
+
 	projectContents := OutlinePackage{Name: packageName, Functions: make(map[string]OutlineFunc), Structs: make(map[string]OutlineStruct)}
 
 	// extract package functions
