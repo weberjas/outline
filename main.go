@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/fs"
 	"io/ioutil"
@@ -14,8 +15,8 @@ import (
 var projectContents = make(map[string]project.OutlinePackage)
 
 func main() {
-
-	showOnlyExp := false
+	showOnlyExp := flag.Bool("showOnlyExp", false, "show only exported functions and methods")
+	flag.Parse()
 	err := filepath.WalkDir(".", func(path string, info fs.DirEntry, err error) error {
 
 		if err != nil {
@@ -29,7 +30,7 @@ func main() {
 			if err != nil {
 				log.Fatalf("Failed to read file: %s", path)
 			}
-			parsedOutlinePackage, err := project.ParseFile(fileContents, showOnlyExp)
+			parsedOutlinePackage, err := project.ParseFile(fileContents, *showOnlyExp)
 			if err != nil {
 				log.Printf("Failed to parse file: %s", path)
 			}
