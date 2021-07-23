@@ -1,6 +1,7 @@
 package suspicious
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -12,4 +13,8 @@ type TimeStore struct {
 
 func (t TimeStore) ExtendLife(ext time.Duration) {
 	t.ending.Add(ext)
+}
+
+func (t TimeStore) unexportedFunction() {
+	fmt.Println("I'm just here for testing!")
 }
