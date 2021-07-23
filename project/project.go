@@ -8,9 +8,9 @@ import (
 )
 
 // define regular expressions for elements of interest
-var packageRegex = regexp.MustCompile(`^package (\S+)`)
-var functionRegex = regexp.MustCompile(`\nfunc (\S+)[(]`)
-var structRegex = regexp.MustCompile(`\ntype (\S+) struct`)
+var packageRegex = regexp.MustCompile(`(?m)^package (\S+)\n`)
+var functionRegex = regexp.MustCompile(`(?m)^func (\S+)[(]`)
+var structRegex = regexp.MustCompile(`(?m)^type (\S+) struct`)
 
 type OutlinePackage struct {
 	Name      string

@@ -23,7 +23,7 @@ func main() {
 
 		if strings.HasSuffix(info.Name(), ".go") {
 
-			fmt.Printf("Loading %s\n", path)
+			//fmt.Printf("Loading %s\n", path)
 			fileContents, err := ioutil.ReadFile(path)
 			if err != nil {
 				log.Fatalf("Failed to read file: %s", path)
