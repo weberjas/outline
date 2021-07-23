@@ -86,7 +86,6 @@ func ParseFile(fileContents []byte, showOnlyExp bool) (OutlinePackage, error) {
 	if len(packageFunctions) > 0 {
 		for _, functionName := range packageFunctions {
 			if unicode.IsUpper(rune(functionName[1][0])) || (unicode.IsLower(rune(functionName[1][0])) && !showOnlyExp) {
-				fmt.Println("Is it upper? ", string(rune(functionName[1][0])), unicode.IsUpper(rune(functionName[1][0])))
 				projectContents.Functions[functionName[1]] = OutlineFunc{Name: functionName[1]}
 			}
 		}
