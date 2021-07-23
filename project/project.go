@@ -3,6 +3,8 @@ package project
 import (
 	"fmt"
 	"regexp"
+
+	"github.com/fatih/color"
 )
 
 // define regular expressions for elements of interest
@@ -29,26 +31,46 @@ type OutlineStruct struct {
 }
 
 func (op OutlinePackage) Print(indentLevel int) {
-	// determine how far to indent
-	indent := ""
-	for i := 0; i < indentLevel; i++ {
-		indent = indent + "    "
-	}
-	fmt.Printf("%sPackage: %s\n", indent, op.Name)
+
+	boldCyan := color.New(color.FgCyan).Add(color.Underline).Add(color.Bold)
+	boldCyan.Printf("\n%s%s\n", calculateIndent(indentLevel), op.Name)
 	if len(op.Packages) > 0 {
 		for _, internalPackages := range op.Packages {
 			internalPackages.Print(indentLevel + 1)
 		}
 	}
 
-	fmt.Printf("Functions:\n")
+	//fmt.Printf("Functions:\n")
+	for funcName := range op.Functions {
+		color.Yellow("%s%s (F)\n", calculateIndent(indentLevel+1), op.Functions[funcName].Name)
+		// op.Functions[funcName].Print(indentLevel + 1)
+	}
+
+	for structName := range op.Structs {
+		op.Structs[structName].Print(indentLevel + 1)
+	}
 
 }
-func (op OutlineFunc) Print() {
 
+// func (of OutlineFunc) Print(indentLevel int) {
+// 	fmt.Printf("%s%s (F)\n", calculateIndent(indentLevel), of.Name)
+// }
+
+func (os OutlineStruct) Print(indentLevel int) {
+	color.Green("%s%s (S)\n", calculateIndent(indentLevel), os.Name)
+	for methodName := range os.Methods {
+		color.Magenta("%s%s (M)\n", calculateIndent(indentLevel+1), os.Methods[methodName].Name)
+		// os.Methods[methodName].Print(indentLevel + 1)
+	}
 }
-func (op OutlineStruct) Print() {
 
+func calculateIndent(indentLevel int) string {
+	// determine how far to indent
+	indent := ""
+	for i := 0; i < indentLevel; i++ {
+		indent = indent + "    "
+	}
+	return indent
 }
 
 // parse the file contents and return the outlinePackage object created
