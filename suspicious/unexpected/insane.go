@@ -5,7 +5,7 @@
 // and will be lost if the code is regenerated
 //
 
-package unexpected
+package suspicious/unexpected
 
 type bland struct {
 	Sample string

@@ -14,6 +14,7 @@ var structRegex = regexp.MustCompile(`(?m)^type (\S+) struct`)
 
 type OutlinePackage struct {
 	Name      string
+	FileName  string
 	Packages  map[string]OutlinePackage
 	Functions map[string]OutlineFunc
 	Structs   map[string]OutlineStruct
@@ -33,7 +34,7 @@ type OutlineStruct struct {
 func (op OutlinePackage) Print(indentLevel int) {
 
 	boldCyan := color.New(color.FgCyan).Add(color.Underline).Add(color.Bold)
-	boldCyan.Printf("%s%s\n", CalculateIndent(indentLevel), op.Name)
+	boldCyan.Printf("%s%s\n", CalculateIndent(indentLevel), op.FileName)
 	if len(op.Packages) > 0 {
 		for _, internalPackages := range op.Packages {
 			internalPackages.Print(indentLevel + 1)
@@ -69,11 +70,11 @@ func CalculateIndent(indentLevel int) string {
 }
 
 // parse the file contents and return the outlinePackage object created
-func ParseFile(fileContents []byte) (OutlinePackage, error) {
+func ParseFile(fileContents []byte, fileName string) (OutlinePackage, error) {
 
 	// extract the package name
 	packageName := packageRegex.FindStringSubmatch(string(fileContents))[1]
-	projectContents := OutlinePackage{Name: packageName, Functions: make(map[string]OutlineFunc), Structs: make(map[string]OutlineStruct)}
+	projectContents := OutlinePackage{Name: packageName, FileName: fileName, Functions: make(map[string]OutlineFunc), Structs: make(map[string]OutlineStruct)}
 
 	// extract package functions
 	packageFunctions := functionRegex.FindAllStringSubmatch(string(fileContents), -1)

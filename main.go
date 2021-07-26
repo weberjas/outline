@@ -30,12 +30,11 @@ func main() {
 			if err != nil {
 				log.Fatalf("Failed to read file: %s", path)
 			}
-			parsedOutlinePackage, err := project.ParseFile(fileContents)
+			parsedOutlinePackage, err := project.ParseFile(fileContents, info.Name())
 			if err != nil {
 				log.Printf("Failed to parse file: %s", path)
 			}
-			dir := filepath.Dir(path)
-			projectContents[dir] = append(projectContents[dir], parsedOutlinePackage)
+			projectContents[parsedOutlinePackage.Name] = append(projectContents[parsedOutlinePackage.Name], parsedOutlinePackage)
 		}
 		return nil
 	})
