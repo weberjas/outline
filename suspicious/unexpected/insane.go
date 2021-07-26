@@ -7,6 +7,10 @@
 
 package unexpected
 
+type bland struct {
+	Sample string
+}
+
 var MpaaRating = &struct {
 	G    string
 	Pg   string
