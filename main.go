@@ -34,7 +34,8 @@ func main() {
 			if err != nil {
 				log.Printf("Failed to parse file: %s", path)
 			}
-			projectContents[parsedOutlinePackage.Name] = append(projectContents[parsedOutlinePackage.Name], parsedOutlinePackage)
+			dir := filepath.Dir(path)
+			projectContents[dir] = append(projectContents[dir], parsedOutlinePackage)
 		}
 		return nil
 	})
@@ -65,7 +66,8 @@ func main() {
 		indentCount := len(pathParts)
 		indent := project.CalculateIndent(indentCount)
 
-		boldWhite.Printf("\n\n%s%s\n", indent, pathParts[len(pathParts)-1])
+		//boldWhite.Printf("\n\n%s%s\n", indent, pathParts[len(pathParts)-1])
+		boldWhite.Printf("\n\n%s%s\n", indent, key)
 		for _, file := range projectContents[key] {
 			file.Print(indentCount + 1)
 		}

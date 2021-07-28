@@ -1,4 +1,4 @@
-package suspicious/unexpected
+package unexpected
 
 func doNothing() {
 	return
