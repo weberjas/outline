@@ -23,7 +23,7 @@ func main() {
 			return err
 		}
 
-		if strings.HasSuffix(info.Name(), ".go") {
+		if strings.HasSuffix(info.Name(), ".go") && !strings.HasSuffix(info.Name(), "_test.go") {
 
 			//fmt.Printf("Loading %s\n", path)
 			fileContents, err := ioutil.ReadFile(path)
